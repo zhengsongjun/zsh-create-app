@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu } from 'antd';
+import { ConfigProvider, Layout, theme } from 'antd';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ProLayout from '@ant-design/pro-layout';
 // import configData from './../config/config.json';
@@ -43,7 +43,7 @@ const App: React.FC = () => {
   // 将配置与代码中定义的项合并
   const config = {
     title: 'Ant Design Pro',
-    logo: 'https://www.antgroup.com/img/logo.svg',
+    logo: '/vite.svg',
     layout: 'side',
     contentWidth: 'Fluid',
     fixedHeader: true,
@@ -55,52 +55,59 @@ const App: React.FC = () => {
     },
   };
 
+  const layoutSettings = {
+    navTheme: 'dark', // 'light' | 'dark'
+    layout: 'side', // 'side' | 'top' | 'mix'
+    fixedHeader: true,
+    fixSiderbar: true,
+    colorPrimary: '#722ed1',
+    borderRadius: 6,
+  };
+
   return (
-    <Router>
-      <ProLayout {...config}>
-        {' '}
-        {/* 使用从 JSON 配置中读取的配置 */}
-        <Layout style={{ minHeight: '100vh' }}>
-          {/* <Sider width={200} className='site-layout-background'>
-            <Menu
-              mode='inline'
-              defaultSelectedKeys={['1']}
-              style={{ height: '100%', borderRight: 0 }}
-            >
-              <Menu.Item key='1' icon={<UserOutlined />}>
-                User
-              </Menu.Item>
-              <Menu.Item key='2' icon={<LaptopOutlined />}>
-                Products
-              </Menu.Item>
-              <Menu.Item key='3' icon={<NotificationOutlined />}>
-                Notifications
-              </Menu.Item>
-            </Menu>
-          </Sider> */}
-          <Layout style={{ padding: '0 24px 24px' }}>
-            <Header className='site-layout-background' style={{ padding: 0 }} />
-            <Content
-              style={{
-                padding: 24,
-                margin: 0,
-                minHeight: 280,
-              }}
-            >
-              <Routes>
-                <Route path='/' element={<div>Home Page</div>} />
-                <Route path='/user' element={<div>User Page</div>} />
-                <Route path='/products' element={<div>Products Page</div>} />
-                <Route
-                  path='/notifications'
-                  element={<div>Notifications Page</div>}
-                />
-              </Routes>
-            </Content>
+    <ConfigProvider
+      theme={{
+        algorithm:
+          layoutSettings.navTheme === 'dark'
+            ? theme.darkAlgorithm
+            : theme.defaultAlgorithm,
+        token: {
+          colorPrimary: layoutSettings.colorPrimary,
+          borderRadius: layoutSettings.borderRadius,
+        },
+      }}
+    >
+      <Router>
+        <ProLayout {...config}>
+          {/* 使用从 JSON 配置中读取的配置 */}
+          <Layout style={{ minHeight: '100vh' }}>
+            <Layout style={{ padding: '0 24px 24px' }}>
+              <Header
+                className='site-layout-background'
+                style={{ padding: 0 }}
+              />
+              <Content
+                style={{
+                  padding: 24,
+                  margin: 0,
+                  minHeight: 280,
+                }}
+              >
+                <Routes>
+                  <Route path='/' element={<div>Home Page</div>} />
+                  <Route path='/user' element={<div>User Page</div>} />
+                  <Route path='/products' element={<div>Products Page</div>} />
+                  <Route
+                    path='/notifications'
+                    element={<div>Notifications Page</div>}
+                  />
+                </Routes>
+              </Content>
+            </Layout>
           </Layout>
-        </Layout>
-      </ProLayout>
-    </Router>
+        </ProLayout>
+      </Router>
+    </ConfigProvider>
   );
 };
 
