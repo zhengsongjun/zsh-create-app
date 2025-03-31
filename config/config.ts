@@ -8,6 +8,7 @@ const layoutConfig: AppLayoutConfig = {
   fixedHeader: true,
   fixSiderbar: true,
   navTheme: 'dark',
+  colorPrimary: '#722ed1',
   borderRadius: 6,
 };
 
