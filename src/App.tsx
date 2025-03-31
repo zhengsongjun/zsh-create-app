@@ -8,10 +8,9 @@ import {
   NotificationOutlined,
 } from '@ant-design/icons';
 import Header from './components/Header/Header';
-import User from './page/User/User';
-import Products from './page/Products/Products';
-import Notifications from './page/Notifications/Notifications';
-
+import { loadPageComponent } from './utils/loadPageComponent';
+import menuData from '../config/menu';
+import { renderIcon } from './utils/renderIcon';
 const { Content } = Layout;
 
 const App: React.FC = () => {
@@ -19,32 +18,10 @@ const App: React.FC = () => {
     return <Link to={item.path || '/'}>{dom}</Link>;
   };
 
-  const onMenuHeaderClick = (a) => {
-    console.log(a);
-    // window.location.href = '/';
-  };
-
-  // 定义 menuDataRender
-  const menuDataRender = [
-    {
-      path: '/user',
-      name: 'User',
-      icon: <UserOutlined />,
-      element: <User />,
-    },
-    {
-      path: '/products',
-      name: 'Products',
-      icon: <LaptopOutlined />,
-      element: <Products />,
-    },
-    {
-      path: '/notifications',
-      name: 'Notifications',
-      icon: <NotificationOutlined />,
-      element: <Notifications />,
-    },
-  ];
+  const formattedMenu = menuData.map((item) => ({
+    ...item,
+    icon: renderIcon(item.icon),
+  }));
 
   // 将配置与代码中定义的项合并
   const config = {
@@ -58,10 +35,6 @@ const App: React.FC = () => {
     colorPrimary: '#722ed1',
     borderRadius: 6,
     menuItemRender,
-    onMenuHeaderClick,
-    menuDataRender: () => {
-      return menuDataRender;
-    },
   };
 
   return (
@@ -80,6 +53,7 @@ const App: React.FC = () => {
       <Router>
         <ProLayout
           {...config}
+          menuDataRender={() => formattedMenu}
           headerContentRender={(props) => (
             <div
               style={{
@@ -103,12 +77,12 @@ const App: React.FC = () => {
                 }}
               >
                 <Routes>
-                  {menuDataRender.map((item) =>
+                  {menuData.map((item) =>
                     item.path && item.element ? (
                       <Route
                         key={item.path}
                         path={item.path}
-                        element={item.element}
+                        element={loadPageComponent(item.element)}
                       />
                     ) : null
                   )}

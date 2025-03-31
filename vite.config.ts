@@ -6,7 +6,9 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'), // 这里使用 path.resolve
+      '@': path.resolve(__dirname, 'src'),
+      '@config': path.resolve(__dirname, 'config'),
+      '@types': path.resolve(__dirname, 'types'),
     },
   },
   css: {
