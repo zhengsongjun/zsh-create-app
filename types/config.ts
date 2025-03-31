@@ -7,6 +7,7 @@ export interface AppLayoutConfig {
   fixSiderbar: boolean;
   navTheme: 'light' | 'dark';
   borderRadius?: number;
+  colorPrimary?: string;
 }
 
 export interface AppThemeConfig {
