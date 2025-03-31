@@ -1,24 +1,27 @@
 import React from 'react';
 import { ConfigProvider, Layout, theme } from 'antd';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import ProLayout from '@ant-design/pro-layout';
-// import configData from './../config/config.json';
 import {
   UserOutlined,
   LaptopOutlined,
   NotificationOutlined,
 } from '@ant-design/icons';
+import Header from './components/Header/Header';
+import User from './page/User/User';
+import Products from './page/Products/Products';
+import Notifications from './page/Notifications/Notifications';
 
-const { Header, Content, Sider } = Layout;
+const { Content } = Layout;
 
 const App: React.FC = () => {
-  // 定义 menuItemRender 和 onMenuHeaderClick
   const menuItemRender = (item: any, dom: any) => {
-    return <a>{dom}</a>;
+    return <Link to={item.path || '/'}>{dom}</Link>;
   };
 
-  const onMenuHeaderClick = () => {
-    window.location.href = '/';
+  const onMenuHeaderClick = (a) => {
+    console.log(a);
+    // window.location.href = '/';
   };
 
   // 定义 menuDataRender
@@ -27,27 +30,33 @@ const App: React.FC = () => {
       path: '/user',
       name: 'User',
       icon: <UserOutlined />,
+      element: <User />,
     },
     {
       path: '/products',
       name: 'Products',
       icon: <LaptopOutlined />,
+      element: <Products />,
     },
     {
       path: '/notifications',
       name: 'Notifications',
       icon: <NotificationOutlined />,
+      element: <Notifications />,
     },
   ];
 
   // 将配置与代码中定义的项合并
   const config = {
-    title: 'Ant Design Pro',
+    title: 'zsj脚手架',
     logo: '/vite.svg',
-    layout: 'side',
+    layout: 'mix',
     contentWidth: 'Fluid',
     fixedHeader: true,
     fixSiderbar: true,
+    navTheme: 'dark', // 'light' | 'dark'
+    colorPrimary: '#722ed1',
+    borderRadius: 6,
     menuItemRender,
     onMenuHeaderClick,
     menuDataRender: () => {
@@ -55,37 +64,37 @@ const App: React.FC = () => {
     },
   };
 
-  const layoutSettings = {
-    navTheme: 'dark', // 'light' | 'dark'
-    layout: 'side', // 'side' | 'top' | 'mix'
-    fixedHeader: true,
-    fixSiderbar: true,
-    colorPrimary: '#722ed1',
-    borderRadius: 6,
-  };
-
   return (
     <ConfigProvider
       theme={{
         algorithm:
-          layoutSettings.navTheme === 'dark'
+          config.navTheme === 'dark'
             ? theme.darkAlgorithm
             : theme.defaultAlgorithm,
         token: {
-          colorPrimary: layoutSettings.colorPrimary,
-          borderRadius: layoutSettings.borderRadius,
+          colorPrimary: config.colorPrimary,
+          borderRadius: config.borderRadius,
         },
       }}
     >
       <Router>
-        <ProLayout {...config}>
+        <ProLayout
+          {...config}
+          headerContentRender={(props) => (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                paddingRight: 24,
+              }}
+            >
+              <Header layout={config.layout} />
+            </div>
+          )}
+        >
           {/* 使用从 JSON 配置中读取的配置 */}
           <Layout style={{ minHeight: '100vh' }}>
             <Layout style={{ padding: '0 24px 24px' }}>
-              <Header
-                className='site-layout-background'
-                style={{ padding: 0 }}
-              />
               <Content
                 style={{
                   padding: 24,
@@ -94,13 +103,15 @@ const App: React.FC = () => {
                 }}
               >
                 <Routes>
-                  <Route path='/' element={<div>Home Page</div>} />
-                  <Route path='/user' element={<div>User Page</div>} />
-                  <Route path='/products' element={<div>Products Page</div>} />
-                  <Route
-                    path='/notifications'
-                    element={<div>Notifications Page</div>}
-                  />
+                  {menuDataRender.map((item) =>
+                    item.path && item.element ? (
+                      <Route
+                        key={item.path}
+                        path={item.path}
+                        element={item.element}
+                      />
+                    ) : null
+                  )}
                 </Routes>
               </Content>
             </Layout>
