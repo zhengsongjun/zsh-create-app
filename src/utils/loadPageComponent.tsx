@@ -3,7 +3,6 @@ import React, { Suspense, type ReactNode } from 'react';
 const modules = import.meta.glob('/src/page/**/index.tsx');
 
 export const loadPageComponent = (components: string | React.FC): ReactNode => {
-  // 如果是组件，直接返回
   if (typeof components === 'function') {
     return React.createElement(components);
   }
@@ -16,7 +15,7 @@ export const loadPageComponent = (components: string | React.FC): ReactNode => {
   }
 
   const LazyComp = React.lazy(() =>
-    importer().then((mod) => ({ default: mod.default }))
+    importer().then((mod) => ({ default: (mod as any).default }))
   );
 
   return (
