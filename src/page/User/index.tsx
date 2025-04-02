@@ -1,5 +1,12 @@
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+
 export const User = () => {
-  return <>用户</>;
+  return (
+    <>
+      <Outlet />
+    </>
+  );
 };
 
 export default User;
