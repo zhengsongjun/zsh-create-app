@@ -21,4 +21,5 @@ export interface MenuItem {
   name: string;
   icon?: string | React.ReactNode; // 兼容字符串和组件
   element?: React.ReactNode | string;
+  children?: MenuItem[];
 }

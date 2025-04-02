@@ -6,6 +6,14 @@ const menuData: MenuItem[] = [
     name: 'User',
     icon: 'UserOutlined',
     element: 'User',
+    children: [
+      {
+        path: 'config',
+        name: 'UserConfig',
+        icon: 'UserOutlined',
+        element: 'UserConfig',
+      },
+    ],
   },
   {
     path: '/products',
