@@ -3,13 +3,13 @@ import { MenuItem } from '../types/config';
 const menuData: MenuItem[] = [
   {
     path: '/user',
-    name: 'User',
+    name: '用户',
     icon: 'UserOutlined',
     element: 'User',
     children: [
       {
         path: 'config',
-        name: 'UserConfig',
+        name: '用户配置',
         icon: 'UserOutlined',
         element: 'UserConfig',
       },
@@ -17,13 +17,13 @@ const menuData: MenuItem[] = [
   },
   {
     path: '/products',
-    name: 'Products',
+    name: '产品',
     icon: 'LaptopOutlined',
     element: 'Products',
   },
   {
     path: '/notifications',
-    name: 'Notifications',
+    name: '消息',
     icon: 'NotificationOutlined',
     element: 'Notifications',
   },
