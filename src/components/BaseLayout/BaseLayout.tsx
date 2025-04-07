@@ -12,6 +12,17 @@ interface BaseLayoutProps {
   header?: React.ReactNode;
 }
 
+const filterMenuItems = (items: MenuItem[]): MenuItem[] => {
+  return items
+    .filter((item) => !item.disabledShowMenu)
+    .map((item) => ({
+      ...item,
+      icon: renderIcon(item.icon),
+      key: item.path,
+      children: item.children ? filterMenuItems(item.children) : undefined,
+    }));
+};
+
 const BaseLayout: React.FC<BaseLayoutProps> = ({
   layoutConfig,
   menu,
